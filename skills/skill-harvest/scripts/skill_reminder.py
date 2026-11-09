@@ -27,14 +27,23 @@ def plain(s):
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     try:
-        prompt = json.loads(sys.stdin.read() or "{}").get("prompt", "")
+        raw = sys.stdin.buffer.read()  # bytes: on Windows sys.stdin decodes as cp1252 and breaks accents ("cómo" -> "cÃ³mo")
+        try:
+            data = raw.decode("utf-8")
+        except UnicodeDecodeError:
+            data = raw.decode("cp1252", "replace")
+        prompt = json.loads(data.lstrip("﻿") or "{}").get("prompt", "")
     except ValueError:
         return
     rules_path = Path(sys.argv[1]) if len(sys.argv) > 1 else HOME / "skill-reminder.json"
     if not prompt or not rules_path.exists():
         return
-    # Pasted logs/pages are not the user's words: they trigger false hints.
-    prompt = re.sub(r"<pasted_content[\s\S]*?</pasted_content>", " ", prompt)
+    # Only the human's own words count. Pasted pages, other sessions' messages,
+    # subagent reports and task notifications also arrive as prompts and
+    # trigger false hints (seen live: a report saying "ERROR" fired diagnosing-bugs).
+    prompt = re.sub(r"<(pasted_content|agent-message|cross-session-message|task-notification|system-reminder)\b[\s\S]*?</\1>", " ", prompt)
+    if re.search(r"<(agent-message|cross-session-message|task-notification)\b", prompt):
+        return  # unterminated machine block: say nothing rather than guess
     prompt = re.sub(r"(?<!\w)/[\w:-]+", " ", prompt)  # /slash-commands typed inline
     text = plain(prompt)
     if text.lstrip().startswith("/"):

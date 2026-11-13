@@ -1,0 +1,9 @@
+{
+ "supervisor_sessions": [
+  "00000000-0000-0000-0000-000000000000"
+ ],
+ "relay_from_names": [
+  "Supervisor"
+ ],
+ "log_supervisor_hits": false
+}

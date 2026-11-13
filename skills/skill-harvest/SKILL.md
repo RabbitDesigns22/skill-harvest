@@ -80,6 +80,13 @@ For each confirmed forgotten skill, use the message template in [references/hand
 - Say which skill, the user ask that proves it applied (with date), and the one rule from that skill that would have prevented the problem.
 - If the same skill is forgotten in many sessions, the real fix is structural. Propose it to the user instead of sending 20 messages:
   - `scripts/skill_reminder.py` is a ready `UserPromptSubmit` hook: it names at most 3 installed skills whose trigger words appear in the message, and prints nothing otherwise. Rules live in `~/.claude/skill-reminder.json` (example: `references/skill-reminder.example.json`). Build the rules from the forgotten-skill evidence, then replay 300 real past messages through it and check the hits by eye before turning it on (measured: 44 of 300 got a hint, ~0.8 s each).
+  - **Supervisors and relayed orders** (optional `~/.claude/skill-reminder-roles.json`, example: `references/skill-reminder-roles.example.json`). In a fleet, the user often talks to one or two supervisor sessions that pass orders down, and messages from other sessions get no hint by default, so the session doing the work never hears which skill applies. List the supervisors' `session_id`s and the names whose relayed orders count:
+    - a supervisor gets up to 5 hints, plus a line asking it to name those skills in the order it hands down;
+    - a `<cross-session-message>` from a listed name is matched like the user's own words, so the receiving session gets its hints while it starts working;
+    - names must match exactly (case and accents ignored); subagent reports, notifications, pasted text and other peers stay ignored;
+    - it is for skill hints only: a relayed order is never the user's approval for anything.
+
+    This costs no model tokens: it is the same script, run on each message. Test it with a supervisor prompt, a relayed order, a subagent report and an unlisted peer before relying on it.
   - Installing the hook changes the user's settings: show the exact JSON block and wait for their ok.
 
 ### 9. Publish (only with the user's explicit ok for that skill)

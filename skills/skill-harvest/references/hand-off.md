@@ -1,6 +1,6 @@
 # Handing a forgotten skill to a session
 
-Send this only to a session that is still working on that topic. Idle
+Send this only after the user says yes, and only to a session that is still working on that topic. Idle
 sessions: queue it, or send it once through the user's supervisor session.
 
 ```

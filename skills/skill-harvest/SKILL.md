@@ -27,7 +27,7 @@ common gap, more common than a missing skill.
 - [ ] 7. Build + with/without test
 - [ ] 8. Hand forgotten skills to the sessions that need them
 - [ ] 9. Publish only on the user's ok, sanitized
-- [ ] 10. Log to the catalog; schedule the next (incremental) run
+- [ ] 10. Log to the catalog; offer to schedule the next (incremental) run
 ```
 
 ### 1. Inventory
@@ -75,7 +75,7 @@ Report the rejects in one line each, with the reason. A clean "nothing passed" i
 - Install locally first (`~/.claude/skills/<name>/`). Local use is the first real test.
 
 ### 8. Hand forgotten skills to the sessions
-For each confirmed forgotten skill, use the message template in [references/hand-off.md](references/hand-off.md):
+For each confirmed forgotten skill, use the message template in [references/hand-off.md](references/hand-off.md). **Show the user every hand-off message (session, text) and send only after their yes.** A scheduled run sends nothing: it puts the drafted messages in its report.
 - One message per session, all its skills together, only for sessions still active on that work. Do not wake idle sessions just to tell them; queue the hint for the next time they run, or send it through the supervisor session if the user has one.
 - Say which skill, the user ask that proves it applied (with date), and the one rule from that skill that would have prevented the problem.
 - If the same skill is forgotten in many sessions, the real fix is structural. Propose it to the user instead of sending 20 messages:
@@ -90,6 +90,7 @@ For each confirmed forgotten skill, use the message template in [references/hand
 
 ### 10. Catalog and schedule
 - Append each run to `CATALOG.md` in the work folder: date, sessions read, candidates, verdicts, what was built, what was handed off, what was published.
+- Offer the user a schedule for the next run; create it only on their ok.
 - Next run is **incremental**: only sessions modified since the last run (`--days` set from the catalog's last date). With no new human messages, stop after step 2 and write one line. That keeps a weekly schedule cheap.
 
 ## Rules

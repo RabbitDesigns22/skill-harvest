@@ -7,7 +7,7 @@ clone.
 - At least 3 queries per candidate: the plain task ("whatsapp cloud api"),
   the platform or tool ("meta webhook"), and the outcome ("onboard client
   number").
-- `npx skills find "<query>"` — returns name, installs and a skills.sh link.
+- `npx skills@1.8.1 find "<query>"` — returns name, installs and a skills.sh link. Pin the CLI version (`npm view skills version`) and note it in the catalog.
 - Also check the official sources first: `anthropics/skills`,
   `vercel-labs/agent-skills`, and the big community indexes.
 

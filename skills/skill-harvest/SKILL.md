@@ -53,10 +53,10 @@ Split digests into batches of about 250 KB (one huge session can be a batch on i
 - Repeated corrections ("again", "I told you", "otra vez", "te dije") rank above plain requests: they are the method failing in front of the user.
 
 ### 5. Market check (never skip)
-Follow [references/market-check.md](references/market-check.md). Short version: 3+ searches with `npx skills find`, open and read the SKILL.md of every result with 1K+ installs, then give one verdict:
+Follow [references/market-check.md](references/market-check.md). Short version: 3+ searches with `npx skills@1.8.1 find` (pin the CLI version; check the current one with `npm view skills version` and write it in the catalog), open and read the SKILL.md of every result with 1K+ installs, then give one verdict:
 - **EXISTS-GOOD** → do not build. Point the session to it. To install it, show the user the exact command pinned to the commit you read, and wait for their yes:
-  `npx skills add https://github.com/<owner>/<repo>/tree/<commit-sha>/<path-to-skill>`
-  (`npx skills find` has no version, so never install from its result as is.)
+  `npx skills@1.8.1 add https://github.com/<owner>/<repo>/tree/<commit-sha>/<path-to-skill>`
+  (the `owner/repo@skill` names that `find` prints carry no commit, so never install from them as is.)
 - **EXISTS-WEAK** → build only if you can name what it lacks, in one line, with evidence.
 - **GAP** → candidate for building.
 
@@ -94,8 +94,8 @@ For each confirmed forgotten skill, use the message template in [references/hand
 ### 9. Publish (only with the user's explicit ok for that skill)
 - Publishing is public and permanent in practice: ask once per skill, show the final README.
 - Sanitize first: `grep -niE` the skill folder for every client name, phone pattern, email, price, ID and key the catalog knows. Zero hits or it does not go out.
-- One repo per skill, matching the user's existing ones: `SKILL.md`, `README.md` (what, why, install line, honest limits), `LICENSE`. Install line: `npx skills add <user>/<repo>`.
-- After pushing, open the repo page and check that every file renders. Then run `npx skills find <name>` later to confirm it is indexed (indexing can take time; say so, don't claim it).
+- One repo per skill, matching the user's existing ones: `SKILL.md`, `README.md` (what, why, install line, honest limits), `LICENSE`. Install line, pinned twice (the CLI and the commit): `npx skills@<cli-version> add https://github.com/<user>/<repo>/tree/<commit-sha>`. `<commit-sha>` is the last commit that changed the skill files; the README commit comes after it and leaves those files identical. Update the line on every release.
+- After pushing, open the repo page and check that every file renders. Then run `npx skills@<cli-version> find <name>` later to confirm it is indexed (indexing can take time; say so, don't claim it).
 
 ### 10. Catalog and schedule
 - Append each run to `CATALOG.md` in the work folder: date, sessions read, candidates, verdicts, what was built, what was handed off, what was published.

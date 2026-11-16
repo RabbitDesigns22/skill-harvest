@@ -5,7 +5,7 @@
 `skill-harvest` is an agent skill for Claude Code. It reads **every** session on your machine, not just the current one, and does four things:
 
 1. **Finds the methods worth a skill.** These are the asks you repeat, the third attempt that finally worked, and the correction you had to make twice. Evidence is counted across sessions; a message pasted into six chats counts once.
-2. **Checks the market before building.** It runs `npx skills find` with 3+ queries and reads the SKILL.md of the top results. Each candidate then gets a verdict: EXISTS-GOOD (point to it; install only with the pinned command, after the user's yes), EXISTS-WEAK (build only the named missing part) or GAP.
+2. **Checks the market before building.** It runs `npx skills@1.8.1 find` with 3+ queries and reads the SKILL.md of the top results. Each candidate then gets a verdict: EXISTS-GOOD (point to it; install only with the pinned command, after the user's yes), EXISTS-WEAK (build only the named missing part) or GAP.
 3. **Finds the skills you installed that your sessions never load.** In our fleet of 42 sessions this was the biggest gap, bigger than any missing skill. It includes a `UserPromptSubmit` hook. The hook names the installed skill that fits each message and stays silent otherwise. Replayed on 300 real messages, it gave a hint on 44, at about 0.8 s each.
 4. **Publishes only what passes a gate.** The skill must show evidence in 2+ sessions, be a method rather than a one-off, pass the market check, and win a with/without test on 3 real prompts. It must also contain no private data, and nothing goes public without your ok.
 
@@ -33,7 +33,7 @@
 ## Install
 
 ```bash
-npx skills add RabbitDesigns22/skill-harvest
+npx skills@1.8.1 add https://github.com/RabbitDesigns22/skill-harvest/tree/87a81b17fc76e8e6012b8a8301d82404674621ee
 ```
 
 Or copy `skills/skill-harvest/` into `~/.claude/skills/`.
@@ -62,7 +62,7 @@ To turn on the reminder hook, add this to `~/.claude/settings.json` under `hooks
 
 **Tus mejores skills ya están en tus chats.** `skill-harvest` lee todos los chats de tu compu y saca los métodos que se repiten o que siempre fallan. Antes de crear nada revisa el mercado (skills.sh). Encuentra las skills que tienes instaladas y que tus chats nunca cargan, y trae un aviso automático que te dice cuál aplica en cada mensaje. Solo publica lo que pasa un filtro estricto: pruebas reales, hueco en el mercado, prueba con y sin la skill y nada privado.
 
-Instalar: `npx skills add RabbitDesigns22/skill-harvest`
+Instalar: `npx skills@1.8.1 add https://github.com/RabbitDesigns22/skill-harvest/tree/87a81b17fc76e8e6012b8a8301d82404674621ee`
 
 ## More skills from the same setup
 
